@@ -1,0 +1,7 @@
+backupsEnabled: false
+backupDirectory: "/backups"
+foldersToBackup:
+  - "world"
+  - "world_nether"
+  - "world_the_end"
+filesToBackup: []

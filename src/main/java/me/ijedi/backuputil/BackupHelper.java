@@ -16,7 +16,7 @@ public class BackupHelper {
 
     public static String getNewBackupName(String folderName){
         Date date = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
         folderName = String.format("%s-%s.zip", folderName, format.format(date));
         return folderName;
     }
