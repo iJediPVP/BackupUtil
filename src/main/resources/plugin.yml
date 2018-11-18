@@ -4,3 +4,8 @@ author: i_Jedi
 main: "me.ijedi.backuputil.BackupUtilMain"
 description: "Description here."
 api-version: 1.13
+
+commands:
+  backup:
+    description: "Command to backup the server."
+    usage: "/backup"
