@@ -1,9 +1,12 @@
 package me.ijedi.backuputil;
 
 import org.bukkit.ChatColor;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,33 +41,38 @@ public class BackupCommand implements TabExecutor {
                 return true;
             }
 
-            // Make sure we aren't doing two backups at once.
-            if(isBackupInProgress){
-                sender.sendMessage(ChatColor.RED + "There is already a backup running!");
-                return true;
-            }
+            new BukkitRunnable(){
+                @Override
+                public void run(){
+                    // Make sure we aren't doing two backups at once.
+                    if(isBackupInProgress){
+                        sender.sendMessage(ChatColor.RED + "There is already a backup running!");
+                        return;
+                    }
 
-            // Do the backup.
-            isBackupInProgress = true;
-            sender.sendMessage(ChatColor.GREEN + "Backup started.");
-            try{
-                List<String> files = new ArrayList<>();
-                if(BackupUtilMain.directories != null){
-                    files.addAll(BackupUtilMain.directories);
-                }
-                if(BackupUtilMain.files != null){
-                    files.addAll(BackupUtilMain.files);
-                }
+                    // Do the backup.
+                    isBackupInProgress = true;
+                    sender.sendMessage(ChatColor.GREEN + "Backup started.");
+                    try{
+                        List<String> files = new ArrayList<>();
+                        if(BackupUtilMain.directories != null){
+                            files.addAll(BackupUtilMain.directories);
+                        }
+                        if(BackupUtilMain.files != null){
+                            files.addAll(BackupUtilMain.files);
+                        }
 
-                String destZip = String.format("%s\\%s\\%s", serverRoot, BackupUtilMain.backupDirectory, BackupHelper.getNewBackupName("Backup"));
-                BackupHelper.zipFiles(serverRoot, destZip, files, false);
-                sender.sendMessage(ChatColor.GREEN + "Backup complete.");
-            } catch (Exception e){
-                e.printStackTrace();
-                sender.sendMessage(ChatColor.RED + "Error completing backup. See console for details.");
-            } finally {
-                isBackupInProgress = false;
-            }
+                        String destZip = String.format("%s\\%s\\%s", serverRoot, BackupUtilMain.backupDirectory, BackupHelper.getNewBackupName("Backup"));
+                        BackupHelper.zipFiles(serverRoot, destZip, files, false);
+                        sender.sendMessage(ChatColor.GREEN + "Backup complete.");
+                    } catch (Exception e){
+                        e.printStackTrace();
+                        sender.sendMessage(ChatColor.RED + "Error completing backup. See console for details.");
+                    } finally {
+                        isBackupInProgress = false;
+                    }
+                }
+            }.runTaskAsynchronously(BackupUtilMain.thisPlugin);
 
             return true;
         } else {
