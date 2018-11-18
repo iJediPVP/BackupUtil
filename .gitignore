@@ -1,0 +1,6 @@
+out/
+src/.idea/workspace.xml
+src/.idea/vcs.xml
+src/.idea/uiDesigner.xml
+target/
+logs/latest.log

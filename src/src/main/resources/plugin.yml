@@ -1,0 +1,6 @@
+name: BackupUtil
+version: 1.0.0
+author: i_Jedi
+main: "me.ijedi.backuputil.BackupUtilMain"
+description: "Description here."
+api-version: 1.13
