@@ -1,6 +1,6 @@
 out/
-src/.idea/workspace.xml
-src/.idea/vcs.xml
-src/.idea/uiDesigner.xml
+.idea/workspace.xml
+.idea/vcs.xml
+.idea/uiDesigner.xml
 target/
 logs/latest.log
