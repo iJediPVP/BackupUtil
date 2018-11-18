@@ -37,7 +37,7 @@ public class BackupTest {
     @Test
     public void testBackupFolder() throws Exception{
         List<String> files = new ArrayList<>();
-        files.add(serverRoot + "\\world\\region");
+        files.add(serverRoot + "\\world");
         files.add(serverRoot + "\\world_nether");
         files.add(serverRoot + "\\world_the_end");
         BackupHelper.zipFiles(serverRoot, backupFolder + "\\testBackupFolder.zip", files, true);
@@ -46,9 +46,10 @@ public class BackupTest {
     @Test
     public void testBackupFilesAndFolders() throws Exception{
         List<String> files = new ArrayList<>();
-        files.add(serverRoot + "\\world\\region");
+        files.add(serverRoot + "\\world");
         files.add(serverRoot + "\\world_nether");
         files.add(serverRoot + "\\world_the_end");
+        files.add(serverRoot + "\\plugins");
         files.add(serverRoot + "spigot.yml");
         BackupHelper.zipFiles(serverRoot, backupFolder + "\\testBackupFilesAndFolders.zip", files, true);
     }
