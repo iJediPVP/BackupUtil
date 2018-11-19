@@ -8,6 +8,7 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,8 +30,8 @@ public class BackupCommand implements TabExecutor {
                 return true;
             }
 
-            String serverRoot = BackupUtilMain.thisPlugin.getServer().getWorldContainer().getAbsolutePath();
-            // Alt? : new File(".").getAbsolutePath()
+            String serverRoot = new File("").getAbsolutePath();
+            //sender.sendMessage(serverRoot);
 
             if(BackupUtilMain.backupDirectory == null || BackupUtilMain.backupDirectory.length() == 0){
                 sender.sendMessage(ChatColor.RED + "Backup directory is not set.");
@@ -62,8 +63,9 @@ public class BackupCommand implements TabExecutor {
                             files.addAll(BackupUtilMain.files);
                         }
 
-                        String destZip = String.format("%s\\%s\\%s", serverRoot, BackupUtilMain.backupDirectory, BackupHelper.getNewBackupName("Backup"));
-                        BackupHelper.zipFiles(serverRoot, destZip, files, false);
+                        BackupHelper helper = new BackupHelper();
+                        String destZip = String.format("%s%s/%s", serverRoot, BackupUtilMain.backupDirectory, helper.getNewBackupName("Backup"));
+                        helper.zipFiles(serverRoot, destZip, files, false);
                         sender.sendMessage(ChatColor.GREEN + "Backup complete.");
                     } catch (Exception e){
                         e.printStackTrace();
@@ -71,6 +73,7 @@ public class BackupCommand implements TabExecutor {
                     } finally {
                         isBackupInProgress = false;
                     }
+                    this.cancel();
                 }
             }.runTaskAsynchronously(BackupUtilMain.thisPlugin);
 

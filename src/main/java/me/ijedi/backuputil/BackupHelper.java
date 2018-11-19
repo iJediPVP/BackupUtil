@@ -14,14 +14,14 @@ import java.util.zip.ZipOutputStream;
 
 public class BackupHelper {
 
-    public static String getNewBackupName(String folderName){
+    public String getNewBackupName(String folderName){
         Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
         folderName = String.format("%s-%s.zip", folderName, format.format(date));
         return folderName;
     }
 
-    public static void zipFiles(String basePath, String destPathStr, List<String> filesToZip, boolean overwrite) throws FileExistsException{
+    public void zipFiles(String basePath, String destPathStr, List<String> filesToZip, boolean overwrite) throws FileExistsException{
         // See if our destination exists
         File destFile = new File(destPathStr);
         if(destFile.exists()){
@@ -41,37 +41,46 @@ public class BackupHelper {
             }
         }
 
+        FileOutputStream stream = null;
+        ZipOutputStream zipStream = null;
         try{
-            FileOutputStream stream = new FileOutputStream(destFile);
-            try (ZipOutputStream zipStream = new ZipOutputStream(stream)){
+            stream = new FileOutputStream(destFile);
+            zipStream = new ZipOutputStream(stream);
 
-                // Loop through the files
-                for(String filePath : filesToZip){
-                    File file = new File(filePath);
-                    if(file.exists()){
+            // Loop through the files
+            for(String filePath : filesToZip){
+                File file = new File(filePath);
+                if(file.exists()){
 
 
-                        if(file.isDirectory()){
-                            // Handle directories
-                            zipSubFolder(basePath, file, zipStream);
+                    if(file.isDirectory()){
+                        // Handle directories
+                        zipSubFolder(basePath, file, zipStream);
 
-                        } else {
-                            // Handle files
-                            zipFile(basePath, file, zipStream);
-                        }
-
+                    } else {
+                        // Handle files
+                        zipFile(basePath, file, zipStream);
                     }
+
                 }
             }
 
+
         } catch (IOException e){
             System.out.println(e.toString());
+        } finally {
+            try{
+                zipStream.finish();
+                zipStream.close();
+            } catch (IOException e){
+                System.out.println(e.toString());
+            }
         }
 
     }
 
     // Recursively zip a folder and all of its sub folders and files.
-    private static void zipSubFolder(String basePath, File directory, ZipOutputStream stream) throws IOException{
+    private void zipSubFolder(String basePath, File directory, ZipOutputStream stream) throws IOException{
         for(File childFile : directory.listFiles()){
 
             if(childFile.isDirectory()){
@@ -87,7 +96,7 @@ public class BackupHelper {
     }
 
     // Zips a single file
-    private static void zipFile(String basePath, File file, ZipOutputStream stream) throws IOException{
+    private void zipFile(String basePath, File file, ZipOutputStream stream) throws IOException{
         Path path = Paths.get(file.getPath());
         String relativePath = new File(basePath).toURI().relativize(file.toURI()).getPath();
         ZipEntry entry = new ZipEntry(relativePath);

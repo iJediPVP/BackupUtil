@@ -12,7 +12,8 @@ public class BackupTest {
 
     @Test
     public void testGetBackupName(){
-        String name = BackupHelper.getNewBackupName("world");
+        BackupHelper helper = new BackupHelper();
+        String name = helper.getNewBackupName("world");
         System.out.println(name);
     }
 
@@ -31,7 +32,8 @@ public class BackupTest {
         String fileName = serverRoot + "spigot.yml";
         List<String> files = new ArrayList<>();
         files.add(fileName);
-        BackupHelper.zipFiles(serverRoot, backupFolder + "\\testBackupFile.zip", files, true);
+        BackupHelper helper = new BackupHelper();
+        helper.zipFiles(serverRoot, backupFolder + "\\testBackupFile.zip", files, true);
     }
 
     @Test
@@ -40,7 +42,8 @@ public class BackupTest {
         files.add(serverRoot + "\\world");
         files.add(serverRoot + "\\world_nether");
         files.add(serverRoot + "\\world_the_end");
-        BackupHelper.zipFiles(serverRoot, backupFolder + "\\testBackupFolder.zip", files, true);
+        BackupHelper helper = new BackupHelper();
+        helper.zipFiles(serverRoot, backupFolder + "\\testBackupFolder.zip", files, true);
     }
 
     @Test
@@ -51,7 +54,8 @@ public class BackupTest {
         files.add(serverRoot + "\\world_the_end");
         files.add(serverRoot + "\\plugins");
         files.add(serverRoot + "spigot.yml");
-        BackupHelper.zipFiles(serverRoot, backupFolder + "\\testBackupFilesAndFolders.zip", files, true);
+        BackupHelper helper = new BackupHelper();
+        helper.zipFiles(serverRoot, backupFolder + "\\testBackupFilesAndFolders.zip", files, true);
     }
 
 }
