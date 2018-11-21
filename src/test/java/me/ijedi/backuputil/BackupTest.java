@@ -58,4 +58,10 @@ public class BackupTest {
         helper.zipFiles(serverRoot, backupFolder + "\\testBackupFilesAndFolders.zip", files, true);
     }
 
+    @Test
+    public void testPurgeFiles() {
+        BackupHelper helper = new BackupHelper();
+        helper.purgeOldFiles(serverRoot + "\\backups", "Backup", 2);
+    }
+
 }

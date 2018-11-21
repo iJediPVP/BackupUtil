@@ -7,6 +7,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -103,6 +106,29 @@ public class BackupHelper {
         stream.putNextEntry(entry);
         Files.copy(path, stream);
         stream.closeEntry();
+    }
+
+
+    public void purgeOldFiles(String baseDirectory, String backupPrefix, int daysToKeep){
+        File backupDir = new File(baseDirectory);
+        File[] backupFiles = backupDir.listFiles();
+        List<File> filesToPurge = new ArrayList<>();
+
+        LocalDate cutoffDate = LocalDate.now().minusDays(daysToKeep);
+
+        // Find files with our prefix with a modified date before our cutoff
+        for(File file : backupFiles){
+            if(file.getName().startsWith(backupPrefix) && file.getName().endsWith(".zip")
+                    && file.lastModified() < cutoffDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()){
+                filesToPurge.add(file);
+            }
+        }
+
+        // Delete files
+        for(File file : filesToPurge){
+            System.out.println("BackupUtil: Deleting - " + file.getName());
+            file.delete();
+        }
     }
 
 }

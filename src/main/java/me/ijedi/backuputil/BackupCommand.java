@@ -66,6 +66,7 @@ public class BackupCommand implements TabExecutor {
                         BackupHelper helper = new BackupHelper();
                         String destZip = String.format("%s%s/%s", serverRoot, BackupUtilMain.backupDirectory, helper.getNewBackupName("Backup"));
                         helper.zipFiles(serverRoot, destZip, files, false);
+                        helper.purgeOldFiles(String.format("%s%s", serverRoot, BackupUtilMain.backupDirectory), "Backup", BackupUtilMain.daysToKeepBackups);
                         sender.sendMessage(ChatColor.GREEN + "Backup complete.");
                     } catch (Exception e){
                         e.printStackTrace();

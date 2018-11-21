@@ -10,11 +10,13 @@ public class BackupUtilMain extends JavaPlugin {
     private final String DIRECTORY = "backupDirectory";
     private final String FOLDERS = "foldersToBackup";
     private final String FILES = "filesToBackup";
+    private final String DAYS_TO_KEEP = "daysToKeepBackups";
 
     public static JavaPlugin thisPlugin;
     public static boolean isEnabled;
     public static String backupDirectory;
     public static List<String> directories, files;
+    public static int daysToKeepBackups = 3;
 
     @Override
     public void onEnable(){
@@ -37,6 +39,7 @@ public class BackupUtilMain extends JavaPlugin {
         backupDirectory = this.getConfig().getString(DIRECTORY);
         directories = this.getConfig().getStringList(FOLDERS);
         files = this.getConfig().getStringList(FILES);
+        daysToKeepBackups = this.getConfig().getInt(DAYS_TO_KEEP);
     }
 
 }

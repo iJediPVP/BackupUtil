@@ -1,5 +1,6 @@
 backupsEnabled: false
 backupDirectory: "/backups"
+daysToKeepBackups: 3
 foldersToBackup:
   - "world"
   - "world_nether"
